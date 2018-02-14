@@ -378,6 +378,11 @@ def city_station():
 
 if __name__=='__main__':
     configure()
+    tm = time.localtime()
+
+    if tm.tm_hour>=23 or tm.tm_hour<=6:
+        print('现在是休息时间',tm.tm_hour,'点')
+        exit('bye!!!!')
     time_go=input('please in put time:(格式2018-03-03)中文---:>>').strip()
     formattime = time.strptime(time_go, "%Y-%m-%d")
     from_station=input('from station:---:>>')
@@ -388,7 +393,6 @@ if __name__=='__main__':
                 #查询模块
                 # result=ticket_check(request,time_go,from_station,go_station)
     text_data=[]
-    tm=time.localtime()
     text_data=check_ti(request)
     text_data=list(zip(text_data,list(range(1,30))))
     a=login()
