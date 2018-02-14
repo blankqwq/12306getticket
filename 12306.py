@@ -34,6 +34,7 @@ def configure():
                 seat_choose=input('理想座位ABC |过道| DE:')
                 f1.write('%s\n%s\n1%s'%(username,password,seat_choose))
                 print('模版文件已经产生请自行查看')
+                f1.close()
             else:
                 print('配置文件已导入，可以进行下一步')
                 f1.seek(0)
