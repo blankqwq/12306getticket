@@ -27,13 +27,12 @@ def configure():
             if f1.readline()=='':
                 print('未检查到配置信息')
                 f1.close()
-                print('格式')
+                print('请输入配置信息，配置文件自动保存')
                 f1=open('config.txt','w')
-                f1.write('''
-                用户名
-                密码
-                想要的位置C就是1C
-                ''')
+                username=input('Please input username:')
+                password=input('Please input password')
+                seat_choose=input('理想座位ABC |过道| DE:')
+                f1.write('%s\n%s\n1%s'%(username,password,seat_choose))
                 print('模版文件已经产生请自行查看')
             else:
                 print('配置文件已导入，可以进行下一步')
@@ -151,12 +150,12 @@ def buy_ticket(secretStr,train_date,back_train_date,query_from_station_name,quer
             buy_data={
                 'secretStr': secretStr,
                 'train_date': train_date,
-                'back_train_date':back_train_date,
+                'back_train_date': back_train_date,
                 'tour_flag': 'dc',
-                'purpose_codes':'ADULT',
+                'purpose_codes': 'ADULT',
                 'query_from_station_name': query_from_station_name,
                 'query_to_station_name': query_to_station_name,
-                'undefined':''
+                'undefined': '',
             }
             r1=request.post('https://kyfw.12306.cn/otn/login/checkUser',data={'_json_att':''},headers=head)
             r=request.post('https://kyfw.12306.cn/otn/leftTicket/submitOrderRequest',headers=head,data=buy_data)
@@ -364,7 +363,7 @@ def check_ti(func):
 
 
 def city_station():
-    r=requests.get('https://kyfw.12306.cn/otn/resources/js/framework/station_name.js')
+    r=requests.get('https://kyfw.12306.cn/otn/resources/js/framework/station_name.js',headers=head)
     text=r.text
     text=text.split('|')
     global from_station, go_station,go_code,from_code
