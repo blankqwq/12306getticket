@@ -3,9 +3,7 @@
 第一次命令行内输入配置信息即可，无需导入
 
 新手写的，请见谅蛤蛤蛤，可以满足刷票，emmm
-需要导入的库有
-import re
-import requests
-import time
-from PIL import Image
-from django.utils.http import urlunquote
+需要pip的模块requests，pillow，django
+验证码暂时采用手动输入序号的方式，
+并未加入刷票和邮件提醒，该方式会在后续不断加入
+现在能达到的目的仅仅只有下单和查询，
