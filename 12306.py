@@ -9,7 +9,8 @@ global_Token=''
 head = {
     'Origin':'https://kyfw.12306.cn',
     'User-Agent': 'Chrome/64.0.3282.140',
-    'Referer':'https://kyfw.12306.cn/otn/leftTicket/init'
+    'Referer':'https://kyfw.12306.cn/otn/leftTicket/init',
+    'Connection':'keep-alive'
 }
 leftticket=''
 keyischang=''
@@ -215,10 +216,9 @@ def OSDT():
                         DTOS = request.post('https://kyfw.12306.cn/otn/confirmPassenger/getPassengerDTOs',data=data,headers=head)
                         if DTOS.status_code == 200 and DTOS.url!='http://www.12306.cn/mormhweb/logFiles/error.html':
                             DTOS.encoding=DTOS.apparent_encoding
-                            print(DTOS.json())
+                            print('获取信息成功')
                             global default_user
                             default_user=DTOS.json().get('data').get('normal_passengers')[0]#设置默认第几个乘客默认0第一个
-                            print(default_user)
                             i=0
                     except:
                         print('OSDT error')
@@ -243,7 +243,7 @@ def check_info():
             }
             r=request.post('https://kyfw.12306.cn/otn/confirmPassenger/checkOrderInfo',data=data,headers=head)
             if r.status_code==200:
-                print(r.json())
+                print('检查信息成功！开始下一步')
                 break
         except:
             print('chekinfo error')
@@ -255,6 +255,8 @@ def getCount(car_all,who_go):
     tran_date = '%s %s %s %s 00:00:00 GMT+0800 (CST)' % (
     time.strftime('%a', formattime), time.strftime('%b', formattime), str(formattime.tm_mday).zfill(2),
     formattime.tm_year)
+    print(tran_date)
+    time.sleep(0.5)
     while True:
         try:
             data={
@@ -270,13 +272,14 @@ def getCount(car_all,who_go):
                 '_json_att':'',
                 'REPEAT_SUBMIT_TOKEN':global_Token
             }
-            r=request.post('https://kyfw.12306.cn/otn/confirmPassenger/getQueueCount',data=data)
+            print(data)
+            r=request.post('https://kyfw.12306.cn/otn/confirmPassenger/getQueueCount',data=data,headers=head)
+            print(r.json())
             if r.status_code==200:
-                print(r.json())
-                print(r.json()['messages'])
-                if r.json()['messages']=='系统忙，请稍后重试':
+                if r.json()['status']=='False':
                     time.sleep(1)
                     continue
+                print('剩余票数\033[43m%s\033[0m' % r.json()['data']['ticket'])
                 break
         except:
             print('get Count erro')
